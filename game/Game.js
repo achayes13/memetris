@@ -1,4 +1,4 @@
-const BasePieceGenerator = require('./PieceGenerator');
+const BagGenerator = require('./PieceGenerator');
 const pieces = require('./pieces');
 const {copy} = require('./util');
 
@@ -48,7 +48,7 @@ function place(grid, piece) {
 class Game {
   constructor(seed) {
     this._leaderboard = [];
-    this._pieceGenerator = new BasePieceGenerator(seed);
+    this._pieceGenerator = new BagGenerator(seed);
     this._newGame();
   }
 
@@ -79,8 +79,8 @@ class Game {
     };
   }
 
-  restart() {
-    this._newGame();
+  restart(seed) {
+    this._restart(seed);
   }
 
   garbage(c) {
@@ -156,6 +156,11 @@ class Game {
   // Game state management helpers
   //
 
+  _restart(seed) {
+    this._resetSeed(seed);
+    this._newGame();
+  }
+
   _newGame() {
     const prevScore = this._gameState?.score;
     if (prevScore > 0) {
@@ -196,8 +201,9 @@ class Game {
     };
 
     if (!tryPlace(this._grid, piece)) {
-      this._newGame();
-      this._onNewGame?.();
+      const newSeed = Math.random();
+      this._restart(newSeed);
+      this._onNewGame?.(newSeed);
       return;
     }
 
@@ -266,6 +272,10 @@ class Game {
       ...this._gameState,
       pendingGarbage: 0,
     };
+  }
+
+  _resetSeed(seed) {
+    this._pieceGenerator.reset(seed);
   }
 }
 

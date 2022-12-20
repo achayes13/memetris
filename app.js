@@ -32,8 +32,8 @@ game1.setListener(onChange);
 const game2 = new Game(seed);
 game2.setListener(onChange);
 
-game1.setNewGameListener(() => game2.restart());
-game2.setNewGameListener(() => game1.restart());
+game1.setNewGameListener((seed) => game2.restart(seed));
+game2.setNewGameListener((seed) => game1.restart(seed));
 
 game1.setGarbageListener(c => game2.garbage(c));
 game2.setGarbageListener(c => game1.garbage(c));
