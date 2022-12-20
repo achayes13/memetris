@@ -1,4 +1,6 @@
+const BasePieceGenerator = require('./PieceGenerator');
 const pieces = require('./pieces');
+const {copy} = require('./util');
 
 const ROWS = 20;
 const COLS = 10;
@@ -8,7 +10,6 @@ const LINES_PER_LEVEL = 8;
 const LINES_TO_POINTS = [0, 40, 100, 300, 1200];
 const MAX_LEADERBOARD_SIZE = 3;
 
-const copy = piece => piece.map(row => [...row]);
 const rotate = piece =>
   piece.map((row, i) => row.map((_, j) => piece[j][piece.length - i - 1]));
 
@@ -45,10 +46,10 @@ function place(grid, piece) {
 }
 
 class Game {
-  constructor(name) {
+  constructor(name, seed) {
     this._leaderboard = [];
     this._name = name;
-
+    this._pieceGenerator = new BasePieceGenerator(seed);
     this._newGame();
   }
 
@@ -178,7 +179,7 @@ class Game {
   }
 
   _spawnPiece() {
-    const shape = copy(pieces[Math.floor(Math.random() * pieces.length)]);
+    const shape = this._pieceGenerator.nextPiece();
     const row = -1 * shape.findIndex(row => Math.max(...row) > 0);
     const col = Math.floor((COLS - shape[0].length) / 2);
 

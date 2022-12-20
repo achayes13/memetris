@@ -33,6 +33,7 @@
     "babel-preset-react-app": "^10.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "mersenne-twister": "^1.1.0",
     "react": "16.8.5",
     "react-dom": "16.8.5",
     "reactdom": "^2.0.0",

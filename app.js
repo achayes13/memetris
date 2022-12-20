@@ -29,9 +29,10 @@ const clientConfig = {
   games: GAMES,
 };
 
+var seed = Math.random();
 const games = Array(GAMES)
   .fill(0)
-  .map((_, i) => new Game(`t${i + 1}`));
+  .map((_, i) => new Game(`t${i + 1}`, seed));
 
 const controller = new Controller(games);
 const spectator = new Spectator(games);
@@ -39,7 +40,7 @@ const spectator = new Spectator(games);
 games.forEach(game => {
   const otherGames = games.filter(x => x !== game);
   game.setListener(() => spectator.update(game));
-  game.setNewGameListener(() => otherGames.forEach(x => x.restart()));
+  game.setNewGameListener((newSeed) => otherGames.forEach(x => x.restart(seed)));
   game.setGarbageListener(c => otherGames.forEach(x => x.garbage(c)));
 });
 
