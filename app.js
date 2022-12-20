@@ -25,11 +25,11 @@ const onChange = () =>
     game2: game2?.state(),
     controller: controller?.state(),
   });
-
-const game1 = new Game();
+var seed = Math.random();
+const game1 = new Game(seed);
 game1.setListener(onChange);
 
-const game2 = new Game();
+const game2 = new Game(seed);
 game2.setListener(onChange);
 
 game1.setNewGameListener(() => game2.restart());
